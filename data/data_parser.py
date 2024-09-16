@@ -1,10 +1,11 @@
 from connection.wrapper import request
 from graphql import queries
 import data.data_operation as data
+from model.cluster import Cluster
 
 
 # Example Function
-def _get_all_cluster_info(access_token: str) -> list[object]:
+def get_all_cluster_info(access_token: str) -> list[Cluster]:
     clusters_information = []
 
     # Gather clusters information

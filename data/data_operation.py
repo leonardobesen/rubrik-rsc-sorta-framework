@@ -1,8 +1,9 @@
 from typing import Optional
+from model.cluster import Cluster
 
 
 # Example Function
-def create_cluster_from_data(data) -> Optional[object]:
+def create_cluster_from_data(data: dict) -> Optional[Cluster]:
     try:
         return Cluster(
             id=data["id"],
