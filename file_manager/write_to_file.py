@@ -4,43 +4,43 @@ from enum import Enum
 from datetime import datetime
 from configuration.configuration import get_root_dir
 from services.formatter import format_timedelta
+from model.cluster import Cluster
 
 
 class Sheets(Enum):
-    INCOMPLIANCE = 'Objects In Compliance'
+    CLUSTERS = 'Clusters'
 
 
-def create_empty_file() -> str:
+def _create_empty_file(report_name: str) -> str:
     # Get current datetime formatted
     now = datetime.now().strftime("%d-%m-%Y_%H_%M_%S")
     # Filename for your reports
-    file_name = f'Rubrik_Compliance_{now}.xlsx'
+    file_name = f'{report_name}_{now}.xlsx'
     report_path = os.path.join(get_root_dir(), 'reports', file_name)
 
     return report_path
 
 
-def generate_report(summary: dict, in_compliance: list[object]) -> str:
-    REPORT_FILE = create_empty_file()
+def generate_report(report_name: str, clusters: list[Cluster]) -> str:
+    REPORT_FILE = _create_empty_file(report_name)
 
     writer = pd.ExcelWriter(REPORT_FILE, engine='openpyxl')
 
     # Involke all your functions that update your writer here
-    writer = write_compliance_data(
-        writer, in_compliance)
+    writer = write_cluster_data(writer, clusters)
 
     writer.close()
 
     return REPORT_FILE
 
 
-def write_compliance_data(writer: pd.ExcelWriter, db_list: list[object]) -> pd.ExcelWriter:
-    writer.book.create_sheet(title=Sheets.INCOMPLIANCE.value)
+def write_cluster_data(writer: pd.ExcelWriter, clusters: list[Cluster]) -> pd.ExcelWriter:
+    writer.book.create_sheet(title=Sheets.CLUSTERS.value)
 
-    df_summary = pd.DataFrame([{
+    df = pd.DataFrame([{
         # Write your column names and their values here. Exemple:
-        # 'Cluster': db.cluster.name,
-    } for db in db_list])
-    df_summary.to_excel(writer, sheet_name=Sheets.INCOMPLIANCE.value, index=False)
+        'Cluster': cluster.name,
+    } for cluster in clusters])
+    df.to_excel(writer, sheet_name=Sheets.CLUSTERS.value, index=False)
 
     return writer
