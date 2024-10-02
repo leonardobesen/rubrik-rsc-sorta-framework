@@ -4,7 +4,7 @@ from configuration.configuration import get_timezone_info
 import pytz
 
 
-def iso_to_date(iso_str: Optional[str], correct_timezone=True) -> Optional[datetime]:
+def iso_to_date(iso_str: Optional[str], should_fix_timezone=True) -> Optional[datetime]:
     timezone = get_timezone_info()
 
     if not iso_str:
@@ -12,7 +12,7 @@ def iso_to_date(iso_str: Optional[str], correct_timezone=True) -> Optional[datet
 
     try:
         date_obj = datetime.fromisoformat(iso_str.replace('Z', '+00:00'))
-        if correct_timezone:
+        if should_fix_timezone:
             date_obj = date_obj.astimezone(pytz.timezone(timezone))
         return date_obj.replace(tzinfo=None)
     except ValueError:
