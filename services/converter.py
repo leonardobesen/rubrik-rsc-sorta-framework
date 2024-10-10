@@ -4,7 +4,7 @@ from configuration.configuration import get_timezone_info
 import pytz
 
 
-def iso_to_date(iso_str: Optional[str], should_fix_timezone=True) -> Optional[datetime]:
+def iso_time_str_to_date(iso_str: Optional[str], should_fix_timezone=True) -> Optional[datetime]:
     timezone = get_timezone_info()
 
     if not iso_str:
@@ -24,7 +24,7 @@ def bytes_to_tb(bytes_size: int) -> float:
     return round(bytes_size/(1000**4), 2)
 
 
-def seconds_to_duration(long_value: Optional[int]) -> Optional[timedelta]:
+def seconds_to_timedelta(long_value: Optional[int]) -> Optional[timedelta]:
     if not long_value:
         return None
 

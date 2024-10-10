@@ -1,7 +1,7 @@
 import datetime
 
 
-def format_timedelta(td: datetime.timedelta) -> str:
+def format_timedelta_to_str(td: datetime.timedelta) -> str:
     days = td.days
     hours, rem = divmod(td.seconds, 3600)
     minutes, _ = divmod(rem, 60)
