@@ -1,5 +1,6 @@
 import os
 import json
+from services.validations import is_str_list_effectively_empty
 from pathlib import Path
 from typing import Optional
 
@@ -26,6 +27,7 @@ def get_root_dir() -> str:
 
 def get_timezone_info() -> str:
     config = load_config()
+
     TZ_INFO_DEFAULT = "UTC"
 
     try:
@@ -51,29 +53,29 @@ def get_google_config_path() -> Optional[str]:
 
 def get_drive_folder_id() -> Optional[list[str]]:
     config = load_config()
+
     try:
-        FOLDER_ID = config["google_drive_upload_folder_id"]
-
-        if FOLDER_ID == []:
-            return None
-
-        return FOLDER_ID
+        FOLDER_ID = config["google_drive_upload_folder_ids"]
     except KeyError:
         return None
 
+    if not is_str_list_effectively_empty(FOLDER_ID):
+        return None
 
-def non_compliant_threshold() -> float:
+    return FOLDER_ID
+
+
+def get_excluded_clusters_uuids() -> Optional[list[str]]:
     config = load_config()
+
     try:
-        NON_COMPLIANCE_THRESHOLD = config["non_compliance_threshold"]
+        EXCLUDED_CLUSTERS = config["excluded_clusters_uuids"]
+    except KeyError:
+        return None
 
-        if not NON_COMPLIANCE_THRESHOLD or \
-                not isinstance(NON_COMPLIANCE_THRESHOLD, float):
-            return 1.0
+    EXCLUDED_CLUSTERS = is_str_list_effectively_empty(EXCLUDED_CLUSTERS)
 
-        if NON_COMPLIANCE_THRESHOLD < 1:
-            return 1.0
+    if not EXCLUDED_CLUSTERS:
+        return None
 
-        return NON_COMPLIANCE_THRESHOLD
-    except:
-        return 1.0
+    return EXCLUDED_CLUSTERS

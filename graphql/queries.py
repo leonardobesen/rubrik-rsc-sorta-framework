@@ -1,11 +1,14 @@
+from configuration.configuration import get_excluded_clusters_uuids
+
 def all_cluster_info_query() -> tuple[str, dict]:
     variables = {
         "filter": {
             "productFilters": [
-                {
-                    "productType": "CDM"
-                }
-            ]
+              {
+                "productType": "CDM"
+              }
+            ],
+            "excludeId": get_excluded_clusters_uuids()
         }
     }
 
@@ -14,9 +17,23 @@ def all_cluster_info_query() -> tuple[str, dict]:
         nodes{{
           id
           name
+          systemStatus
+          pauseStatus
+          status
           state{{
             connectedState
           }}
+          passesConnectivityCheck
+          lastConnectionTime
+          metric{{
+            totalCapacity
+            usedCapacity
+            snapshotCapacity
+            systemCapacity: miscellaneousCapacity
+            availableCapacity
+            lastUpdateTime
+          }}
+          estimatedRunway
         }}
       }}
     }}"""
