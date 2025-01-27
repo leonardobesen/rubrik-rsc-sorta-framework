@@ -41,7 +41,7 @@ def get_timezone_info() -> str:
         return TZ_INFO_DEFAULT
 
 
-def get_google_config_path() -> Optional[str]:
+def get_google_config_path() -> str:
     try:
         GOOGLE_FILE = os.path.join(
             ROOT_DIR, 'configuration', 'google_drive.json')

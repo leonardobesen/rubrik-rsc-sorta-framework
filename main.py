@@ -1,6 +1,5 @@
 import connection.connect as connect
 import file_manager.write_to_file as write_to_excel
-import file_manager.upload_to_google_drive as uploader
 import configuration.configuration as config
 from controller import controller
 
@@ -23,6 +22,7 @@ if __name__ == '__main__':
 
     folder_id = config.get_drive_folder_id()
     if folder_id is not None:
+        import file_manager.upload_to_google_drive as uploader
         uploader.upload_excel_to_drive(file_path, folder_id)
 
     # Close session
